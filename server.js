@@ -7,9 +7,10 @@ import dotenv from "dotenv";
 import path from "path";
 // initialize server
 const app = express();
+dotenv.config();
 
 // declare server
-const SERVER_PORT = process.env.PORT || 5000;
+const SERVER_PORT = process.env.PORT || 5050;
 
 // middleware
 app.use(express.json());
@@ -20,13 +21,14 @@ app.use(morgan(":method :url :response-time"));
 app.use("/api", router);
 
 if (process.env.NODE_ENV === "production") {
+  console.log("from production scop");
   app.use(express.static("client/build"));
   app.get("*", (req, res) => {
     const _dirname = path.dirname(new URL(import.meta.url).pathname);
     res.sendFile(path.resolve(_dirname, "client", "build", "index.html"));
   });
 } else {
-  app.get("/api", (req, res) => {
+  app.get("/", (req, res) => {
     res.send("Hello");
   });
 }
@@ -40,33 +42,33 @@ app.post("/sendMessage", async (req, res) => {
   let { email, firstName, lastName, phone, websiteType, message } = req.body;
   if (!email || !firstName || !lastName || !phone || !websiteType || !message) {
     return res.status(400).json({ msg: "Not all fields have been entered" });
+  } else {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        type: "OAuth2",
+        user: "thewardbunch@gmail.com",
+        clientId: process.env.GMAIL_CLIENT_ID,
+        clientSecret: process.env.GMAIL_CLIENT_SECRET,
+        refreshToken: process.env.GMAIL_REFRESH_TOKEN,
+        accessToken: process.env.GMAIL_ACCESS_TOKEN,
+      },
+    });
+    const mailOptions = {
+      from: req.body.email,
+      to: "thewardbunch@gmail.com",
+      subject: `Message from ${req.body.email}: ${req.body.websiteType}`,
+      text: req.body.message,
+    };
+    console.log(mailOptions, process.env.GMAIL_REFRESH_TOKEN, "server");
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+        res.send("error");
+      } else {
+        console.log(`Email sent: ` + info.response);
+        res.status(200).send();
+      }
+    });
   }
-
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      type: "OAuth2",
-      user: "thewardbunch@gmail.com",
-      clientId: process.env.GMAIL_CLIENT_ID,
-      clientSecret: process.env.GMAIL_CLIENT_SECRET,
-      refreshToken: process.env.GMAIL_REFRESH_TOKEN,
-      accessToken: process.env.GMAIL_ACCESS_TOKEN,
-    },
-  });
-  const mailOptions = {
-    from: req.body.email,
-    to: "thewardbunch@gmail.com",
-    subject: `Message from ${req.body.email}: ${req.body.websiteType}`,
-    text: req.body.message,
-  };
-  console.log(mailOptions, process.env.GMAIL_REFRESH_TOKEN);
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error);
-      res.send("error");
-    } else {
-      console.log(`Email sent: ` + info.response);
-      res.status(200).send();
-    }
-  });
 });

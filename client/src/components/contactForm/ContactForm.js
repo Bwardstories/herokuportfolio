@@ -38,7 +38,7 @@ function ContactForm() {
 
   const sendPostRequest = async (req, res) => {
     try {
-      const res = await fetch("http://localhost:5000/api/sendMessage", {
+      const res = await fetch("http://localhost:5050/sendMessage", {
         method: "POST",
         headers: {
           "Accept": "application/json",
@@ -46,6 +46,7 @@ function ContactForm() {
         },
         body: JSON.stringify(formData),
       });
+      console.log("hitting this");
       const data = await res.json();
       console.log(data, "from post request");
       toast.success(

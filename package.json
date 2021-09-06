@@ -4,12 +4,14 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "build": "cd client && npm run build",
+    "install-client": "cd client && npm install",
     "server": "nodemon  server.js",
     "client": "npm start --prefix client",
     "clientinstall": "npm install --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\" ",
     "start": "node server.js",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "heroku-postbuild": "npm run install-cllient && npm run build"
   },
   "repository": {
     "type": "git",
@@ -19,6 +21,9 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Bwardstories/herokuportfolio/issues"
+  },
+  "engines": {
+    "node": "16.1.0"
   },
   "homepage": "https://github.com/Bwardstories/herokuportfolio#readme",
   "type": "module",
