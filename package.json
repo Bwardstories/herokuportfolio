@@ -11,7 +11,7 @@
     "clientinstall": "npm install --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\" ",
     "start": "node server.js",
-    "heroku-postbuild": "npm run install-cllient && npm run build"
+    "heroku-postbuild": "cd react-ui/ &&npm run install-client && npm run build"
   },
   "repository": {
     "type": "git",
