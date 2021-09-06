@@ -10220,7 +10220,7 @@
     "schema-utils" "^3.0.0"
     "semver" "^7.3.2"
 
-"sass@^1.3.0", "sass@^1.39.0":
+"sass@^1.3.0":
   "integrity" "sha512-F4o+RhJkNOIG0b6QudYU8c78ZADKZjKDk5cyrf8XTKWfrgbtyVVXImFstJrc+1pkQDCggyidIOytq6gS4gCCZg=="
   "resolved" "https://registry.npmjs.org/sass/-/sass-1.39.0.tgz"
   "version" "1.39.0"
