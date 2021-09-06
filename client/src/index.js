@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import { ContactProvider as ProvideContact } from "./hooks/useContact";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./components/header/Header.scss";
+// random comment to push
 
 ReactDOM.render(
   <React.StrictMode>
